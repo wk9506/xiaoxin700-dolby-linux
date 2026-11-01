@@ -1,0 +1,17 @@
+{
+  "kind": "pink",
+  "sample_rate": 48000,
+  "duration_seconds": 13.0,
+  "active_seconds": 12.0,
+  "tail_seconds": 1.0,
+  "level_dbfs_rms": -42.0,
+  "fade_ms": 50.0,
+  "stimulus_samples": 624000,
+  "active_samples": 576000,
+  "tail_samples": 48000,
+  "seed": 0,
+  "format": "float32 stereo L=R",
+  "stereo_mode": "symmetric",
+  "analysis_window_start_seconds": 6.0,
+  "analysis_window_end_seconds": 11.0
+}

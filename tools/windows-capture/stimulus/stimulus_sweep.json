@@ -1,0 +1,17 @@
+{
+  "kind": "sweep",
+  "sample_rate": 48000,
+  "duration_seconds": 11.0,
+  "active_seconds": 10.0,
+  "tail_seconds": 1.0,
+  "f0_hz": 20.0,
+  "f1_hz": 22000.0,
+  "level_dbfs_peak": -18.0,
+  "fade_ms": 50.0,
+  "stimulus_samples": 528000,
+  "active_samples": 480000,
+  "tail_samples": 48000,
+  "format": "float32 stereo L=R",
+  "stereo_mode": "symmetric",
+  "inverse_filter": "inverse_sweep.npy"
+}

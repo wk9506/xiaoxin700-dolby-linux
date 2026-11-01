@@ -1,0 +1,56 @@
+Dolby(DAX2) 声学测量 — Windows 端操作清单 v2
+=============================================
+（v1 的 setup.cmd 因中文编码在 cmd 里乱码，已全部换成纯英文脚本，
+  重新双击即可；diskperf 那步已删除，不用管。）
+
+【0】开机进 Windows（上次已成功，照旧）
+  U盘启动 → Ventoy → "XiaoXin700 Win10 VHD"
+
+【1】安装便携 Python（离线，约2-3分钟）
+  双击 U:\daxcap\setup.cmd
+  滚动条到底，看到 [ALL DEPS OK] 才算成功。
+  若中途 FAIL，把窗口内容截图回来。
+
+【2】找到 Dolby 的"关"（本机 UI 没有总开关，用系统增强开关代替）
+  方法A（首选）：
+    控制面板 → 硬件和声音 → 声音（或：右下角喇叭图标右键→"声音"）
+    → 播放 选项卡 → 双击"扬声器/Realtek High Definition Audio"
+    → 找 **"增强"(Enhancements) 选项卡 → 勾选"禁用所有声音效果"**
+    → 确定。（若没有该选项卡，试方法B）
+  方法B：
+    Win+I 设置 → 系统 → 声音 → 点击"扬声器"进属性
+    → "音频增强/Audio enhancements" 下拉 → 关闭。
+  ★ 做完这步，右下角 Dolby 程序窗口保持关闭即可，不要动档位。
+
+【3】先跑单条探针（验证整条链路，30秒）
+  双击 U:\daxcap\run_probe.cmd
+  - 会播放约13秒噪声并自动录音；
+  - 正常结束 = 出现 Probe done，且 stim\captures\ 里生成
+    loopback_pink_off.wav；
+  - 若报 "no Dolby APO" 警告：说明【2】的关闭生效了（好事），
+    继续下一步；若报其它错误，截图回来。
+
+【4】录 OFF 基线（Dolby 保持关闭状态）
+  双击 U:\daxcap\run_capture_off.cmd   （5条，约2分钟，会自己播噪声）
+  注意：run_probe 录的那条 pink 会被本步覆盖，没关系。
+
+【5】打开 Dolby，录 dynamic 档
+  1) 回【2】把"禁用所有声音效果"取消勾选（或音频增强改回 Dolby）；
+  2) 右下角双击 Dolby 图标 → 选 **"动态"** 页；
+  3) 双击 U:\daxcap\run_capture_dolby.cmd （又是5条）。
+
+【6】（可选，各加2分钟）movie / voice 档
+  在 Dolby 里点"电影"页后，打开 stim 目录的 Powershell
+  （Shift+右键→在此处打开 Powershell），执行：
+    ..\py\python312\python.exe capture_dax.py --stimulus stimulus_sweep.wav --label movie
+    ..\py\python312\python.exe capture_dax.py --stimulus stimulus_pink.wav --label movie
+  再点"语音"页，同样两条把 movie 换成 voice。
+
+【7】收尾
+  保留 U:\daxcap\stim\captures\ 整个文件夹，别删别改名。
+  重启回 Linux，告诉我"录完了"。
+
+注意：
+ - 全程用内置扬声器，不插耳机/外放；
+ - Windows 音量条在【3】之前调好后（建议 60-70%）全程不动；
+ - 播放噪声时别同时开其他会出声的程序（QQ/浏览器视频等）。

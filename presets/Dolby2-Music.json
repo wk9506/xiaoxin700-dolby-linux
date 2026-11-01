@@ -1,0 +1,43 @@
+{
+    "_generator": {
+        "tool": "dax_measure/gen_xiaoxin_preset.py",
+        "source": "Windows WASAPI loopback, XiaoXin 700-15ISK DAX2",
+        "note": "curve peak +17.0 dB, makeup +16.0 dB"
+    },
+    "output": {
+        "blocklist": [],
+        "convolver#0": {
+            "bypass": false,
+            "input-gain": 0.0,
+            "output-gain": 0.0,
+            "kernel-name": "Dolby2-Music-2e5c688f",
+            "ir-width": 100,
+            "autogain": false
+        },
+        "limiter#0": {
+            "bypass": false,
+            "input-gain": 16.0,
+            "output-gain": 0.0,
+            "mode": "Herm Thin",
+            "oversampling": "None",
+            "dithering": "None",
+            "sidechain-type": "Internal",
+            "lookahead": 1.0,
+            "attack": 1.0,
+            "release": 5.0,
+            "threshold": -1.0,
+            "gain-boost": false,
+            "stereo-link": 100.0,
+            "alr": true,
+            "alr-attack": 10.0,
+            "alr-release": 200.0,
+            "alr-knee": 6.0,
+            "alr-knee-smooth": -5.0,
+            "sidechain-preamp": 0.0
+        },
+        "plugins_order": [
+            "convolver#0",
+            "limiter#0"
+        ]
+    }
+}
