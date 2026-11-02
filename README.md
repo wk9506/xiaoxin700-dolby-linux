@@ -36,6 +36,24 @@ bash scripts/dolby-check.sh                              # 体检：声音是否
 bash scripts/dolby-toggle.sh                             # Dolby 效果 开/关 A/B 对比
 ```
 
+## v2 修复（2026-11）：响度校准、失真根治、小音量托底
+
+实测（U 盘采集 ON/OFF RMS 差）发现并修复三件事：
+
+1. **makeup 双重计入**：曲线峰值频段增益(+17dB)是「形状」不是「电平」，
+   DAX2 宽带响度增益实测只有 **+8.3dB**（voice +6.2）。makeup 16→8 后
+   限制器不再重压，根治「收音机/刺啦」杂音与轻微破音。
+2. **限制器动态**：1ms/5ms 做十几个 dB GR = 可闻调幅失真。改为
+   5ms/150ms + lookahead 5ms + 8x oversampling。
+3. **新增 Compressor**：DAX2 电平相关增益实测 轻档 +20.5dB / 响档 +8.3dB；
+   温和复刻（th−22 / 1.5:1 / makeup+5 / 80ms / 500ms），小音量更清楚。
+   嫌有底噪可在 EE 界面单独关掉压缩器。
+
+> **EE 8.3.2 已知坑**：CLI `-l` 换预设只换 convolver kernel，
+> **input-gain 等参数不生效**。参数要生效请到 GUI 里点一次预设；
+> `db/*.rc`（`~/.var/app/com.github.wwmm.easyeffects/config/easyeffects/db/`）
+> 才是运行时参数源。另 `-b` 语义：`-b 1`=旁通(原生)，`-b 2`=效果启用。
+
 ## 四个预设（对应 Windows Dolby Audio 的档位）
 
 | 预设 | Windows 档位 | 特点（实测，相对关闭 Dolby） |
@@ -45,8 +63,9 @@ bash scripts/dolby-toggle.sh                             # Dolby 效果 开/关 
 | `Dolby2-Music` | 音乐 | 最亮最响，总增益最高 |
 | `Dolby2-Voice` | 语音 | 最收敛，656–844 Hz 凹陷最深（突出对白） |
 
-每个预设 = Convolver（4096 抽头最小相位 FIR，零附加延迟）+ Limiter（−1 dBFS
-brickwall + ALR，防破音）。
+每个预设 = Convolver（4096 抽头最小相位 FIR，零附加延迟）+ Compressor（温和
+向上响度，小音量托底）+ Limiter（−1 dBFS 顶棚：attack 5ms / release 150ms /
+lookahead 5ms / 8x 过采样，只做安全削峰）。
 
 ## 目录结构
 
